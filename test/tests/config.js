@@ -31,8 +31,8 @@ describe("Config", function() {
           return iterator.next();
         })
         .then(function(val) {
-          assert.equal(val.name(), 'core.repositoryformatversion');
-          assert.equal(val.value(), '0');
+          assert.equal(val.name(), "core.repositoryformatversion");
+          assert.equal(val.value(), "0");
         });
     });
 
