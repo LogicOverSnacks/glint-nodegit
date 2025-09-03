@@ -35,18 +35,17 @@
     "lib": "./lib"
   },
   "engines": {
-    "node": ">= 16"
+    "node": ">= 20"
   },
   "dependencies": {
-    "@axosoft/nan": "^2.20.0-gk.1",
-    "@mapbox/node-pre-gyp": "^1.0.11",
+    "@axosoft/nan": "^2.22.0-gk.1",
+    "@mapbox/node-pre-gyp": "^2.0.0",
     "fs-extra": "^10.0.0",
-    "got": "^11.8.6",
+    "got": "^14.4.7",
     "json5": "^2.2.0",
     "lodash": "^4.17.21",
-    "node-gyp": "^10.1.0",
-    "ramda": "^0.27.1",
-    "tar-fs": "^2.1.1"
+    "node-gyp": "^11.2.0",
+    "tar-fs": "^3.0.9"
   },
   "devDependencies": {
     "@mmomtchev/node-pre-gyp-github": "^2.0.2",
@@ -60,7 +59,8 @@
     "istanbul": "^0.4.5",
     "js-beautify": "~1.14.0",
     "lcov-result-merger": "^5.0.0",
-    "mocha": "^9.1.3",
+    "mocha": "^11.4.0",
+    "nyc": "^17.1.0",
     "walk": "^2.3.15"
   },
   "binary": {
@@ -71,7 +71,6 @@
   },
   "scripts": {
     "cov": "npm run cppcov && npm run filtercov && npm run mergecov",
-    "coveralls": "cat ./test/coverage/merged.lcov | coveralls",
     "cppcov": "mkdir -p test/coverage/cpp && ./lcov-1.10/bin/lcov --gcov-tool /usr/bin/gcov-4.9 --capture --directory build/Release/obj.target/nodegit/src --output-file test/coverage/cpp/lcov_full.info",
     "filtercov": "./lcov-1.10/bin/lcov --extract test/coverage/cpp/lcov_full.info $(pwd)/src/* $(pwd)/src/**/* $(pwd)/include/* $(pwd)/include/**/* --output-file test/coverage/cpp/lcov.info && rm test/coverage/cpp/lcov_full.info",
     "generateJson": "node generate/scripts/generateJson",
