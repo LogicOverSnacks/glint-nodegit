@@ -1,11 +1,6 @@
 on:
-  push:
-    branches:
-      - master
-      - backport/*
-    tags:
-      - v*.*.*
   pull_request:
+  workflow_dispatch:
 
 name: Testing
 
@@ -14,12 +9,15 @@ jobs:
     name: "Linux Tests"
     strategy:
       matrix:
-        node: [20, 22, 24]
+        node: [22.18.0]
       fail-fast: false
     runs-on: ubuntu-22.04
     steps:
       - name: Install Dependencies for Ubuntu
-        run: sudo apt-get update && sudo apt-get install -y software-properties-common git build-essential clang libssl-dev libkrb5-dev libc++-dev wget zlib1g-dev
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y software-properties-common git build-essential clang libssl-dev libkrb5-dev libc++-dev wget zlib1g-dev
+          echo "npm_config_openssl_dir=/usr/lib/ssl" >> "$GITHUB_ENV"
 
       - uses: actions/checkout@v4
 
@@ -46,7 +44,7 @@ jobs:
           check-latest: true
 
       - name: Install
-        run: npm install
+        run: npm ci
 
       - name: Test
         run: |
@@ -71,7 +69,7 @@ jobs:
     name: "macOS Tests"
     strategy:
       matrix:
-        node: [20, 22, 24]
+        node: [22.18.0]
       fail-fast: false
     runs-on: macOS-13
     # This is mostly the same as the Linux steps, waiting for anchor support
@@ -81,6 +79,7 @@ jobs:
 
       - name: Setup Environment
         run: |
+          echo "npm_config_openssl_dir=/usr/local/opt/openssl@1.1" >> "$GITHUB_ENV"
           mkdir ~/.ssh_tests
           chmod 700 ~/.ssh_tests
           printf "%b" "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh_tests/config
@@ -97,7 +96,7 @@ jobs:
           check-latest: true
 
       - name: Install
-        run: npm install
+        run: npm ci
 
       - name: Test
         run: |
@@ -122,16 +121,14 @@ jobs:
     name: Windows Tests
     strategy:
       matrix:
-        node: [20, 22, 24]
-        arch: [x86, x64]
-        exclude:
-        - node: 24
-          arch: x86
+        node: [22.18.0]
+        arch: [x64]
       fail-fast: false
     runs-on: windows-2022
     steps:
       - name: Setup Environment
         run: |
+          echo "npm_config_openssl_dir=C:\Program Files\OpenSSL-Win64" >> "$GITHUB_ENV"
           git config --file C:\ProgramData\Git\config core.autocrlf input
           git config --system core.autocrlf input
           git config --global core.autocrlf input
@@ -148,7 +145,7 @@ jobs:
           architecture: ${{ matrix.arch }}
 
       - name: Install
-        run: npm install
+        run: npm ci
 
       - name: Test
         env:

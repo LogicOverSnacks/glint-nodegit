@@ -1,0 +1,50 @@
+name: Package Test
+
+on: workflow_dispatch
+
+jobs:
+  package:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        version: [
+          { node: 22.18.0, electron: 38.0.0, openssl: 1.1.1w }
+        ]
+
+    steps:
+      - name: Checkout git repository
+        uses: actions/checkout@v4
+
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.version.node }}
+          cache: 'npm'
+
+      - name: Setup
+        run: |
+          choco install openssl --version 1.1.1.2100 --allow-downgrade -y --no-progress
+          echo "npm_config_msvs_version=2022" >> $env:GITHUB_ENV
+          echo "npm_config_openssl_dir=C:\Program Files\OpenSSL" >> $env:GITHUB_ENV
+
+      - name: Install
+        env:
+          NODEGIT_OPENSSL_STATIC_LINK: 1
+        run: npm ci --arch=x64 --runtime=electron --target=${{ matrix.version.electron }} --target_arch=x64 --disturl=https://electronjs.org/headers --build_from_source=true
+
+      - name: Deploy
+        run: |
+          node lifecycleScripts/clean
+          npx node-pre-gyp package --runtime=electron --target=${{ matrix.version.electron }}
+      - name: Prepare artifact for upload
+        run: |
+          touch artifact.tar.gz
+          tar -zcf artifact.tar.gz --exclude=artifact.tar.gz .
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-package
+          path: artifact.tar.gz
+          if-no-files-found: error
+          retention-days: 5

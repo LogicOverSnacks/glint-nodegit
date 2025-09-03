@@ -106,6 +106,59 @@ describe("Submodule", function() {
       });
   });
 
+  it("can run sync callback without deadlocking", function() {
+    var repo = this.workdirRepository;
+    var submodules = [];
+    var submoduleCallback = function(submodule, name, payload) {
+      var submoduleName = submodule.name();
+      assert.equal(submoduleName, name);
+      submodules.push(name);
+    };
+
+    return Submodule.foreach(repo, submoduleCallback).then(function() {
+      assert.equal(submodules.length, 1);
+    });
+  });
+
+  // 'Submodule.foreach' and 'Submodule.lookup' do work with the repo locked.
+  // They should work together without deadlocking.
+  it("can run async callback without deadlocking", function() {
+    var repo = this.workdirRepository;
+    var submodules = [];
+    var submoduleCallback = function(submodule, name, payload) {
+      var owner = submodule.owner();
+
+      return Submodule.lookup(owner, name)
+        .then(function(submodule) {
+          assert.equal(submodule.name(), name);
+          submodules.push(name);
+        });
+    };
+
+    return Submodule.foreach(repo, submoduleCallback).then(function() {
+      assert.equal(submodules.length, 1);
+    });
+  });
+
+  it("can setup and clone submodule", function() {
+    this.timeout(30000);
+    var repo = this.repository;
+    var submodulePath = "nodegittest";
+    var submoduleUrl = "https://github.com/nodegit/test.git";
+    var submodule;
+    return NodeGit.Submodule.addSetup(repo, submoduleUrl, submodulePath, 0)
+      .then(function(_submodule) {
+        submodule = _submodule;
+        return submodule.init(0);
+      })
+      .then(function() {
+        return submodule.clone();
+      })
+      .then(function(repo) {
+        assert.ok(repo instanceof Repository);
+      });
+  });
+
   it("can setup and finalize submodule add", function() {
     this.timeout(30000);
 
@@ -156,39 +209,5 @@ describe("Submodule", function() {
         assert.equal(entries[0].path, ".gitmodules");
         assert.equal(entries[1].path, submodulePath);
       });
-  });
-
-  it("can run sync callback without deadlocking", function() {
-    var repo = this.workdirRepository;
-    var submodules = [];
-    var submoduleCallback = function(submodule, name, payload) {
-      var submoduleName = submodule.name();
-      assert.equal(submoduleName, name);
-      submodules.push(name);
-    };
-
-    return Submodule.foreach(repo, submoduleCallback).then(function() {
-      assert.equal(submodules.length, 1);
-    });
-  });
-
-  // 'Submodule.foreach' and 'Submodule.lookup' do work with the repo locked.
-  // They should work together without deadlocking.
-  it("can run async callback without deadlocking", function() {
-    var repo = this.workdirRepository;
-    var submodules = [];
-    var submoduleCallback = function(submodule, name, payload) {
-      var owner = submodule.owner();
-
-      return Submodule.lookup(owner, name)
-        .then(function(submodule) {
-          assert.equal(submodule.name(), name);
-          submodules.push(name);
-        });
-    };
-
-    return Submodule.foreach(repo, submoduleCallback).then(function() {
-      assert.equal(submodules.length, 1);
-    });
   });
 });

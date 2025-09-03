@@ -1075,17 +1075,12 @@
     "config_iterator": {
       "needsForwardDeclaration": false,
       "selfFreeing": true,
+      "freeFunctionName": "git_config_iterator_free",
       "fields": {
         "backend": {
           "ignore": true
         },
         "flags": {
-          "ignore": true
-        },
-        "free": {
-          "ignore": true
-        },
-        "next": {
           "ignore": true
         }
       },
@@ -1126,10 +1121,11 @@
           }
         },
         "git_config_next": {
+          "isAsync": true,
           "jsFunctionName": "next",
           "args": {
             "entry": {
-              "ownedByThis": true
+              "isReturn": true
             }
           },
           "return": {
@@ -1249,10 +1245,42 @@
           "return": {
             "isErrorCode": true
           },
-         "isAsync": true
+          "isAsync": true
         },
         "git_diff_blobs": {
-          "ignore": true
+          "args": {
+            "old_blob" : {
+              "isOptional": true
+            },
+            "old_as_path" : {
+              "isOptional": true
+            },
+            "new_blob" : {
+              "isOptional": true
+            },
+            "new_as_path" : {
+              "isOptional": true
+            },
+            "options" : {
+              "isOptional": true
+            },
+            "file_cb" : {
+              "isOptional": true
+            },
+            "binary_cb": {
+              "isOptional": true
+            },
+            "hunk_cb" : {
+              "isOptional": true
+            },
+            "line_cb" : {
+              "isOptional": true
+            }
+          },
+          "return": {
+            "isErrorCode": true
+          },
+          "isAsync": true
         },
         "git_diff_buffers": {
           "ignore": true
@@ -2371,7 +2399,30 @@
           "ignore": true
         },
         "git_merge_file_from_index": {
-          "ignore": true
+          "args": {
+            "out": {
+              "isReturn": true,
+              "cppClassName": "GitMergeFileResult",
+              "jsClassName": "MergeFileResult",
+              "shouldAlloc": true
+            },
+            "ancestor": {
+              "isOptional": true
+            },
+            "ours": {
+              "isOptional": true
+            },
+            "theirs": {
+              "isOptional": true
+            },
+            "opts": {
+              "isOptional": true
+            }
+          },
+          "isAsync": true,
+          "return": {
+            "isErrorCode": true
+          }
         },
         "git_merge_file_input_init": {
           "ignore": true
@@ -2383,6 +2434,9 @@
           "ignore": true
         },
         "git_merge_file_options_init": {
+          "ignore": true
+        },
+        "git_merge_file_result_free": {
           "ignore": true
         },
         "git_merge_init_options": {
@@ -2410,7 +2464,9 @@
       "ignore": true
     },
     "merge_file_result": {
-      "ignore": true
+      "isReturnable": true,
+      "hasConstructor": true,
+      "ignoreInit": true
     },
     "merge_result": {
       "ignore": true
@@ -4189,6 +4245,17 @@
         },
         "git_submodule_add_finalize": {
           "isAsync": true,
+          "return": {
+            "isErrorCode": true
+          }
+        },
+        "git_submodule_clone": {
+          "isAsync": true,
+          "args": {
+            "opts": {
+              "isOptional": true
+            }
+          },
           "return": {
             "isErrorCode": true
           }

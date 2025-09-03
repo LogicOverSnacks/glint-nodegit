@@ -116,7 +116,14 @@
                 "libraries": [
                   "<(electron_openssl_root)/lib/libcrypto.lib",
                   "<(electron_openssl_root)/lib/libssl.lib"
-                ]
+                ],
+                "copies": [{
+                  "destination": "<(module_root_dir)/build/Release/",
+                  "files": [
+                    "<(electron_openssl_root)/bin/libcrypto-1_1-x64.dll",
+                    "<(electron_openssl_root)/bin/libssl-1_1-x64.dll"
+                  ]
+                }]
               }]
             ],
             "defines": [
@@ -137,6 +144,7 @@
               }
             },
             "libraries": [
+              "ws2_32.lib",
               "crypt32.lib",
               "rpcrt4.lib",
               "secur32.lib"

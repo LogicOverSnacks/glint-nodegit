@@ -1,7 +1,7 @@
 {
-  "name": "nodegit",
+  "name": "@git-glint/nodegit",
   "description": "Node.js libgit2 asynchronous native bindings",
-  "version": "0.28.0-alpha.34",
+  "version": "0.28.0-alpha.112",
   "homepage": "http://nodegit.org",
   "keywords": [
     "libgit2",
@@ -28,7 +28,7 @@
   "main": "lib/nodegit.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/nodegit/nodegit.git"
+    "url": "https://github.com/LogicOverSnacks/glint-nodegit.git"
   },
   "directories": {
     "build": "./build",
@@ -48,6 +48,7 @@
     "tar-fs": "^3.0.9"
   },
   "devDependencies": {
+    "@mmomtchev/node-pre-gyp-github": "^2.0.2",
     "aws-sdk": "^2.1095.0",
     "clean-for-publish": "~1.0.2",
     "combyne": "~0.8.1",
@@ -61,7 +62,8 @@
   "binary": {
     "module_name": "nodegit",
     "module_path": "./build/Release/",
-    "host": "https://axonodegit.s3.amazonaws.com/nodegit/nodegit/"
+    "host": "https://github.com/LogicOverSnacks/glint-nodegit/releases/download/",
+    "remote_path": "{version}"
   },
   "scripts": {
     "cov": "npm run cppcov && npm run filtercov && npm run mergecov",

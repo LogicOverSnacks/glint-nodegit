@@ -295,7 +295,7 @@
         }],
         ["OS=='win'", {
           "defines": [
-            "GIT_WIN32", 
+            "GIT_WIN32",
             "GIT_SCHANNEL",
             "GIT_IO_WSAPOLL"
           ],
@@ -497,7 +497,14 @@
               "libraries": [
                 "<(electron_openssl_root)/lib/libssl.lib",
                 "<(electron_openssl_root)/lib/libcrypto.lib"
-              ]
+              ],
+              "copies": [{
+                "destination": "<(module_root_dir)/build/Release/",
+                "files": [
+                  "<(electron_openssl_root)/bin/libcrypto-1_1-x64.dll",
+                  "<(electron_openssl_root)/bin/libssl-1_1-x64.dll"
+                ]
+              }]
             }, {
               "defines": [
                 "OPENSSL_NO_RIPEMD",
