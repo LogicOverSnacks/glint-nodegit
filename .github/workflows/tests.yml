@@ -1,11 +1,5 @@
 on:
-  push:
-    branches:
-      - master
-      - backport/*
-    tags:
-      - v*.*.*
-  pull_request:
+  workflow_dispatch:
 
 name: Testing
 

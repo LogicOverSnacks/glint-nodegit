@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         version: [
-          { node: 20.14.0, electron: 31.1.0, openssl: 1.1.1w }
+          { node: 22.18.0, electron: 38.0.0, openssl: 1.1.1w }
         ]
 
     steps:
