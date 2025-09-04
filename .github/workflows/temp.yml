@@ -18,7 +18,6 @@ jobs:
           echo "----"
           echo $(brew --cache --bottle-tag=arm64_monterey openssl@1.1)
           echo "Move file for arm64 -----"
-          mv "$FILE" ./openssl@1.1--1.1.1w.arm64_monterey.bottle.tar.gz
+          mv "$FILE" ./openssl.arm64_monterey.bottle.tar.gz
           echo "Installing for arm64 -----"
-          brew fetch --force --bottle-tag=arm64_monterey openssl@1.1
-          brew install ./openssl@1.1--1.1.1w.arm64_monterey.bottle.tar.gz
+          brew install ./openssl.arm64_monterey.bottle.tar.gz
