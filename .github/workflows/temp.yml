@@ -16,7 +16,7 @@ jobs:
           echo "Fetched for arm64 -----"
           echo "$FETCH"
           echo "File for arm64 -----"
-          FILE=$(brew fetch --force --bottle-tag=arm64_monterey openssl@1.1 | ggrep -oP '(?<=Downloaded to\: ).*')
+          FILE=$(brew fetch --force --bottle-tag=arm64_monterey openssl@1.1 | ggrep -oP '(?<=Downloaded to\: ).*openssl@1.1--1.1.1w.arm64_monterey.bottle.1.tar.gz')
           echo "Filed for arm64 -----"
           echo "$FILE"
           echo "Installing for arm64 -----"
