@@ -8,7 +8,6 @@ jobs:
     runs-on: macos-13
     steps:
       - name: Setup (macos M1)
-        if: matrix.os == 'macos-13'
         run: |
           brew install grep
           brew uninstall --ignore-dependencies openssl@1.1
