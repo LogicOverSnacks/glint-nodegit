@@ -1,0 +1,24 @@
+name: Temp
+
+on:
+  workflow_dispatch:
+
+jobs:
+  temp:
+    runs-on: macos-13
+    steps:
+      - name: Setup (macos M1)
+        if: matrix.os == 'macos-13'
+        run: |
+          brew install grep
+          brew uninstall --ignore-dependencies openssl@1.1
+          echo "Fetch for arm64 -----"
+          FETCH=$(brew fetch --force --bottle-tag=arm64_monterey openssl@1.1)
+          echo "Fetched for arm64 -----"
+          echo "$FETCH"
+          echo "File for arm64 -----"
+          FILE=$(brew fetch --force --bottle-tag=arm64_monterey openssl@1.1 | ggrep -oP '(?<=Downloaded to\: ).*')
+          echo "Filed for arm64 -----"
+          echo "$FILE"
+          echo "Installing for arm64 -----"
+          brew install "$FILE"
