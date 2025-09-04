@@ -16,7 +16,5 @@ jobs:
           echo "Filed for arm64 -----"
           echo "$FILE"
           echo "Installing for arm64 -----"
-          LOC=$(brew --cache -s openssl@1.1)
-          echo "$LOC"
-          mv "$FILE" "$LOC"
-          brew install openssl@1.1
+          brew fetch --force --bottle-tag=arm64_monterey openssl@1.1
+          brew install $(brew --cache --bottle-tag=arm64_monterey openssl@1.1)
