@@ -11,13 +11,12 @@ jobs:
         run: |
           brew install grep
           brew uninstall --ignore-dependencies openssl@1.1
-          echo "Fetch for arm64 -----"
-          FETCH=$(brew fetch --force --bottle-tag=arm64_monterey openssl@1.1)
-          echo "Fetched for arm64 -----"
-          echo "$FETCH"
           echo "File for arm64 -----"
           FILE=$(brew fetch --force --bottle-tag=arm64_monterey openssl@1.1 | ggrep -oP '(?<=Downloaded to\: ).*openssl@1.1--1.1.1w.arm64_monterey.bottle.1.tar.gz')
           echo "Filed for arm64 -----"
           echo "$FILE"
           echo "Installing for arm64 -----"
-          brew install "$FILE"
+          LOC=$(brew --cache -s openssl@1.1)
+          echo "$LOC"
+          mv "$FILE" "$LOC"
+          brew install openssl@1.1
