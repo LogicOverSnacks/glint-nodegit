@@ -86,8 +86,11 @@ jobs:
         run: |
           brew install grep
           brew uninstall --ignore-dependencies openssl@1.1
+          echo "Downloading for arm64 -----"
           FILE=$(brew fetch --force --bottle-tag=arm64_monterey openssl@1.1 | ggrep -oP '(?<=Downloaded to\: ).*')
+          echo "Downloaded for arm64 -----"
           echo "$FILE"
+          echo "Installing for arm64 -----"
           brew install "$FILE"
 
       - name: Install (macos M1)
