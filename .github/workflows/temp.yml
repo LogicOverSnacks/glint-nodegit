@@ -19,5 +19,6 @@ jobs:
           echo $(brew --cache --bottle-tag=arm64_monterey openssl@1.1)
           echo "Move file for arm64 -----"
           mv "$FILE" ./openssl.arm64_monterey.bottle.tar.gz
+          tar -xzf ./openssl.arm64_monterey.bottle.tar.gz
           echo "Installing for arm64 -----"
-          brew install ./openssl.arm64_monterey.bottle.tar.gz
+          brew install ./openssl.arm64_monterey.bottle/formula.rb
